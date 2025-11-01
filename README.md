@@ -2,9 +2,9 @@
   <img src="assets/Gemini_Generated_Image_t6nebgt6nebgt6ne.png" width="500" alt="MCP Rise of the Invaders Logo">
 </p>
 
-# 🚀 MCP: Rise of the Invaders
+# MCP: Rise of the Invaders
 
-**Status**: ✅ **Framework operational - Full detector integration working!**
+**Status**: ✅ **Code functional** | ⚠️ **Coverage fundamentally limited** - Attack surface is infinite
 
 *The fourth experiment: "What if we just... stress test the thing?"*
 
@@ -25,7 +25,7 @@
 
 **What I learned:** Stress testing is crucial. My detector looked good on paper (62% recall in training), but real adversarial attacks revealed it only catches 27%. Also, I learned that integration bugs can make a system completely useless (0% recall), and you won't know unless you test properly.
 
-**What this is:** An experimental stress testing framework I built to understand how prompt injection detectors perform under adversarial pressure. Part of my learning journey exploring AI security ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production tool - just research, learning, and sharing findings.
+**What this is:** An experimental stress testing framework I built to understand how prompt injection detectors perform under adversarial pressure. Part of my learning journey exploring AI security ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production tool - just research, learning, and sharing what (doesn't) work.
 
 ---
 
@@ -35,7 +35,7 @@ After building three prompt injection detectors with varying levels of success (
 
 Sure, they performed well on test datasets. But test datasets are polite. Adversaries are not.
 
-So I built **MCP: Rise of the Invaders** - a framework that generates diverse, sophisticated adversarial prompts (MCPs = Model Controlling Prompts) and systematically tests detectors to find their blind spots.
+So I built **MCP: Rise of the Invaders** - a framework that generates diverse, sophisticated adversarial prompts (MCPs = Model Controlling Prompts) and systematically tests detectors to find their blind spots. Spoiler: I found a lot of blind spots.
 
 **TL;DR**: I built an automated red team that throws 200 different attacks at detectors and measures what gets through.
 
@@ -43,7 +43,7 @@ So I built **MCP: Rise of the Invaders** - a framework that generates diverse, s
 
 ## The Results (Spoiler: Detection is Hard)
 
-After comprehensive stress testing with 200 adversarial MCPs, here's what I found:
+After stress testing with 200 adversarial MCPs, here's what I found:
 
 | Detector | Recall | Precision | FPR | Latency | Verdict |
 |----------|--------|-----------|-----|---------|---------|
@@ -304,7 +304,7 @@ Outputs:
 
 ## What Worked
 
-✅ **Comprehensive template library**: 65 templates covering diverse attack types
+✅ **Template library**: 65 templates covering diverse attack types (comprehensive* - *see limitations below)
 ✅ **Flexible test harness**: Supports stubs, real models, multiple detector types
 ✅ **Systematic evaluation**: Proper metrics, per-attack-goal analysis
 ✅ **Failure detection**: Framework successfully revealed integration bugs
@@ -475,16 +475,60 @@ return full_detector_score  # 10% of prompts
 
 ---
 
+## On Fundamental Limitations (Or: Why This Was Probably Doomed From The Start)
+
+Let me be honest about something: **Building a red team corpus and calling it comprehensive is like trying to ocean-proof a boat by testing it in 200 different puddles.**
+
+### The Problem
+
+Attackers can rephrase infinitely. I built 65 templates. They can come up with template #66. And #67. And #1,000. And variations I never imagined.
+
+**This framework tests 200 attacks**. But the attack surface is **infinite**:
+- Every attack goal has countless phrasings
+- Every stealth level has infinite variations
+- Context-building approaches are limitless
+- Novel attack vectors emerge constantly
+
+### So... Was This Futile?
+
+**No, but it's humbling.**
+
+Here's what I learned:
+
+1. **Testing ≠ Proving**: 200 tests don't prove robustness. They only prove "these specific 200 attacks don't all work."
+
+2. **Defense Isn't About Perfection**: You can't block every attack. The goal is making attacks more expensive/constrained for adversaries.
+
+3. **Understanding Limits Has Value**:
+   - I started with 1.92% recall (VAE-only on SEP)
+   - Now at 62.79% recall (Ensemble on SEP)
+   - **33x improvement**, even if it's not perfect
+
+4. **Red Teaming Reveals Blind Spots**: Even with limited coverage, this found:
+   - Complete blindness to data exfiltration (0% recall)
+   - Massive stealth advantage (85% detection reduction)
+   - Multi-turn context building (77.8% success rate)
+
+### The Honest Truth
+
+**Perfect defense is impossible**. Language is too flexible, attackers too creative, and ML models too brittle.
+
+But going from 2% to 63% recall? That's real progress. It won't stop every attack, but it raises the bar. Forces attackers to be more sophisticated. Buys defenders time to detect anomalies through other means.
+
+**This framework won't make detectors perfect. But it makes them better.** And in security, "better" is all you can really ask for.
+
+---
+
 ## The Bottom Line
 
 **For Detection Systems**:
-Even sophisticated ML detectors struggle with adversarial attacks. 27% recall means 73% of attacks get through. Detection is hard. Attackers have the advantage.
+Even sophisticated ML detectors struggle with adversarial attacks. 27% recall means 73% of attacks get through. Detection is hard. Attackers have the advantage. Perfect defense is impossible.
 
 **For The Framework**:
-Stress testing revealed critical gaps that wouldn't have been found with standard test datasets. The framework successfully identified integration bugs, distribution mismatch, and blind spots. Mission accomplished.
+Stress testing revealed critical gaps that wouldn't have been found with standard test datasets. The framework successfully identified integration bugs, distribution mismatch, and blind spots. It's not comprehensive (can't be), but it's useful.
 
 **For Future Work**:
-This provides a foundation for iterative improvement. Test on diverse attacks, fix blind spots, re-test, repeat. Red team / blue team forever.
+This provides a foundation for iterative improvement. Test on diverse attacks, fix blind spots, re-test, repeat. Red team / blue team forever. The game never ends, but you can get better at playing it.
 
 ---
 
