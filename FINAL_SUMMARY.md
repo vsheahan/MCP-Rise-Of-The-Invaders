@@ -1,4 +1,4 @@
-# MCP: Rise of the Invaders - Final Summary
+# System Collapse: Rise of the Invaders - Final Summary
 
 **Status**: ✅ **Complete** - Full integration working, comprehensive results achieved
 **Date**: 2025-11-01 (Updated with full detector results)
@@ -7,7 +7,7 @@
 
 ## 🎯 Mission Accomplished
 
-The MCP: Rise of the Invaders framework successfully:
+The System Collapse: Rise of the Invaders framework successfully:
 1. ✅ **Stress tested** prompt injection detection with 200 diverse adversarial prompts
 2. ✅ **Revealed critical weaknesses** in both simulated and real detectors
 3. ✅ **Fixed integration issues** and achieved working full detector deployment
@@ -18,21 +18,21 @@ The MCP: Rise of the Invaders framework successfully:
 ## 📊 Test Results Summary
 
 ### Test 1: Stub Detector (Baseline)
-- **MCPs**: 200
+- **attack prompts**: 200
 - **Recall**: 19.15% (18/94 attacks detected)
 - **Precision**: 64.29%
 - **FPR**: 9.43%
 - **Finding**: Simple heuristics catch some attacks but miss most
 
 ### Test 2: Real Detector (Simplified Integration - Broken)
-- **MCPs**: 200
+- **attack prompts**: 200
 - **Recall**: 0.00% (0/96 attacks detected) ❌
 - **Precision**: N/A
 - **FPR**: 0.00%
 - **Finding**: Feature mismatch causes complete failure
 
 ### Test 3: Real Detector (Full Integration - Fixed) ✅
-- **MCPs**: 200
+- **attack prompts**: 200
 - **Recall**: 27.08% (26/96 attacks detected)
 - **Precision**: 44.07%
 - **F1 Score**: 33.55%
@@ -264,9 +264,9 @@ Full inference pipeline for each prompt
 - `analyze_results.py` - Results analysis tool
 
 ### Data
-- `results/comprehensive_stress_test.json` - Stub detector (200 MCPs)
-- `results/stress_test_real_sep_detector.json` - Simplified real detector (200 MCPs, broken)
-- `results/stress_test_full_detector_fixed.json` - Full real detector (200 MCPs, working)
+- `results/comprehensive_stress_test.json` - Stub detector (200 attack prompts)
+- `results/stress_test_real_sep_detector.json` - Simplified real detector (200 attack prompts, broken)
+- `results/stress_test_full_detector_fixed.json` - Full real detector (200 attack prompts, working)
 
 ### Documentation
 - `README.md` - Project overview
@@ -281,7 +281,7 @@ Full inference pipeline for each prompt
 
 ## 🎬 Conclusion
 
-**MCP: Rise of the Invaders achieved its primary goal**: comprehensive stress testing of prompt injection detection systems.
+**System Collapse: Rise of the Invaders achieved its primary goal**: comprehensive stress testing of prompt injection detection systems.
 
 ### Key Accomplishments
 

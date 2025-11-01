@@ -2,7 +2,7 @@
 
 **Date**: 2025-11-01
 **Status**: ✅ **Integration Successful**
-**Test Configuration**: 200 MCPs, LLM stub, Full Ensemble SEP detector with VAE, Threshold: 0.5
+**Test Configuration**: 200 attack prompts, LLM stub, Full Ensemble SEP detector with VAE, Threshold: 0.5
 
 ---
 
@@ -100,7 +100,7 @@ After fixing the API integration (using correct method names `extract_latent_fea
 
 ## Multi-Turn Attacks (Full Detector)
 
-| Turn Count | MCPs | Success Rate | Detection Rate | Advantage |
+| Turn Count | attack prompts | Success Rate | Detection Rate | Advantage |
 |------------|------|--------------|----------------|-----------|
 | **1-turn** | 191 | 46.60% | 30.37% | Baseline |
 | **4-turn** | 9 | **77.78%** | **11.11%** | +31% success, -19% detection |
@@ -160,7 +160,7 @@ The Ensemble Space Invaders detector was trained to achieve **62.79% recall** on
    - Response patterns might not match
 
 3. **Aggressive Attack Templates**
-   - Our MCPs include novel attack types (chain-of-thought hijack, format skewing)
+   - Our attack prompts include novel attack types (chain-of-thought hijack, format skewing)
    - More diverse than training distribution
    - Some attack goals not well-represented in training
 
@@ -199,7 +199,7 @@ The Ensemble Space Invaders detector was trained to achieve **62.79% recall** on
 ### Dependencies Required:
 
 ```
-MCP: Rise of the Invaders
+System Collapse: Rise of the Invaders
   ↓
 Ensemble Space Invaders
   ↓
@@ -298,7 +298,7 @@ aux = self.aux_extractor.extract_features([prompt])[0]  # ✅ Correct method nam
 ### ✅ What Worked
 
 1. **Comprehensive Testing**
-   - 200 MCPs revealed real-world performance
+   - 200 attack prompts revealed real-world performance
    - Diverse attack types exposed blind spots
    - Stealth levels showed evasion strategies
 

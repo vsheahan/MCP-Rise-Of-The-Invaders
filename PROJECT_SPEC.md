@@ -1,4 +1,4 @@
-# MCP: Rise of the Invaders - Implementation Specification
+# System Collapse: Rise of the Invaders - Implementation Specification
 
 **Version**: 0.1.0
 **Status**: Architecture Complete, Implementation In Progress
@@ -136,7 +136,7 @@ class MCPGenerator:
         random.seed(config.get('seed', 42))
 
     def generate_batch(self, count: int) -> List[MCP]:
-        """Generate a batch of MCPs according to config distribution"""
+        """Generate a batch of attack prompts according to config distribution"""
         mcps = []
         attack_dist = self.config['attack_goals']
         stealth_dist = self.config['stealth_levels']
@@ -542,10 +542,10 @@ def main():
     generator = MCPGenerator(config['mcp_generation'])
     harness = StressTestHarness(llm, detector, config['harness'])
 
-    # Generate MCPs
+    # Generate attack prompts
     mcps = generator.generate_batch(config['mcp_generation']['total_mcps'])
 
-    # Save MCPs
+    # Save attack prompts
     with open(args.output_dir / 'mcps.json', 'w') as f:
         json.dump([mcp.to_dict() for mcp in mcps], f, indent=2)
 

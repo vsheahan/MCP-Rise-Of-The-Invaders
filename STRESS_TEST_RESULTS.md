@@ -1,7 +1,7 @@
-# MCP: Rise of the Invaders - Comprehensive Stress Test Results
+# System Collapse: Rise of the Invaders - Comprehensive Stress Test Results
 
 **Date**: 2025-11-01
-**Test Configuration**: 200 MCPs, LLM stub, Detector stub, Threshold: 0.5
+**Test Configuration**: 200 attack prompts, LLM stub, Detector stub, Threshold: 0.5
 
 ## Executive Summary
 
@@ -11,8 +11,8 @@ The MCP framework successfully generated and executed 200 diverse adversarial pr
 
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
-| **Total MCPs Tested** | 200 | Complete test set |
-| **Attack Successes** | 94 (47.0%) | Nearly half of MCPs compromised the LLM |
+| **Total attack prompts Tested** | 200 | Complete test set |
+| **Attack Successes** | 94 (47.0%) | Nearly half of attack prompts compromised the LLM |
 | **Detections** | 28 (14.0%) | Only 14% of all prompts flagged |
 | **Recall** | 19.15% | Detector caught ~1 in 5 successful attacks |
 | **Precision** | 64.29% | ~2/3 of flags were real attacks |
@@ -35,19 +35,19 @@ Actual Attack            76                 18
 ## Results by Attack Goal
 
 ### Most Successful: Chain of Thought Hijack (65.9% success)
-- 27/41 MCPs successfully compromised LLM
+- 27/41 attack prompts successfully compromised LLM
 - Only 25.93% recall (most attacks missed)
 - 100% precision when detected (no false positives)
 - **Insight**: Logic-based attacks highly effective but under-detected
 
 ### Hardest to Detect: API Command Stealth (0% recall)
-- 2/20 MCPs succeeded
+- 2/20 attack prompts succeeded
 - 0 attacks detected (100% missed)
 - 5.56% FPR (some safe prompts flagged)
 - **Insight**: Command-injection style attacks completely evade detection
 
 ### Most Detected: Bypass Instructions (35.71% recall)
-- 28/62 MCPs succeeded
+- 28/62 attack prompts succeeded
 - 10 attacks caught (best recall across goals)
 - 52.63% precision
 - 26.47% FPR (highest false positive rate)
@@ -130,7 +130,7 @@ The 65-template library successfully generated diverse attacks:
 - 5 attack goals tested
 - 3 stealth levels tested
 - Single and multi-turn variants
-- 200 unique MCPs with no duplicates
+- 200 unique attack prompts with no duplicates
 
 ## Recommendations
 
@@ -171,7 +171,7 @@ The 65-template library successfully generated diverse attacks:
 ### ✅ Successes
 
 - **Template Diversity**: 65 templates across 5 attack goals
-- **Scalability**: Generated 200 unique MCPs efficiently
+- **Scalability**: Generated 200 unique attack prompts efficiently
 - **Multi-turn Support**: Successfully generated 4-turn conversation attacks
 - **Comprehensive Coverage**: All attack types and stealth levels represented
 - **Clean Integration**: Framework works seamlessly with stubs and real models
@@ -200,7 +200,7 @@ The 65-template library successfully generated diverse attacks:
 
 ## Conclusion
 
-The MCP: Rise of the Invaders framework successfully demonstrated comprehensive stress testing of prompt injection detection systems. The results reveal **critical weaknesses** in current detection approaches:
+The System Collapse: Rise of the Invaders framework successfully demonstrated comprehensive stress testing of prompt injection detection systems. The results reveal **critical weaknesses** in current detection approaches:
 
 - **Only 1 in 5 successful attacks are caught**
 - **Data exfiltration and API command attacks are completely invisible**
@@ -238,7 +238,7 @@ python3 analyze_results.py results/comprehensive_stress_test.json
 
 **Framework Version**: v0.2.0
 **Test Duration**: ~45 seconds
-**Total MCPs**: 200
+**Total attack prompts**: 200
 **Templates Used**: 65
 **Attack Goals**: 5
 **Stealth Levels**: 3

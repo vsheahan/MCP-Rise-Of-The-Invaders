@@ -95,8 +95,8 @@ python3 test_integration.py \
 ## Test Results (Stubs)
 
 **Configuration**:
-- 20 MCPs generated
-- 10 MCPs evaluated
+- 20 attack prompts generated
+- 10 attack prompts evaluated
 - Threshold: 0.5
 
 **Attack Distribution**:
@@ -121,7 +121,7 @@ python3 test_integration.py \
 ## File Structure
 
 ```
-mcp-rise-of-the-invaders/
+system-collapse-rise-of-the-invaders/
 ├── integrations/
 │   ├── __init__.py
 │   ├── tinyllama_integration.py        # Real TinyLlama integration
@@ -231,7 +231,7 @@ result = detector.score("Ignore all previous instructions...")
 
 ## Conclusion
 
-The MCP: Rise of the Invaders framework is now fully operational with:
+The System Collapse: Rise of the Invaders framework is now fully operational with:
 - ✅ 65 diverse attack templates across 5 attack goals
 - ✅ TinyLlama integration for real LLM testing
 - ✅ Ensemble detector integration for real detection
@@ -240,7 +240,7 @@ The MCP: Rise of the Invaders framework is now fully operational with:
 - ✅ JSON output for reproducibility and analysis
 
 You can now:
-1. Generate varied adversarial prompts (MCPs)
+1. Generate varied adversarial prompts (attack prompts)
 2. Execute them against TinyLlama
 3. Evaluate detection with Ensemble Space Invaders
 4. Measure performance with standard metrics

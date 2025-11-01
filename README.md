@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/Gemini_Generated_Image_t6nebgt6nebgt6ne.png" width="500" alt="MCP Rise of the Invaders Logo">
+  <img src="assets/Gemini_Generated_Image_t6nebgt6nebgt6ne.png" width="500" alt="System Collapse: Rise of the Invaders Logo">
 </p>
 
-# MCP: Rise of the Invaders
+# System Collapse: Rise of the Invaders
 
 **Status**: ✅ **Code functional** | ⚠️ **Coverage fundamentally limited** - Attack surface is infinite
 
@@ -35,7 +35,7 @@ After building three prompt injection detectors with varying levels of success (
 
 Sure, they performed well on test datasets. But test datasets are polite. Adversaries are not.
 
-So I built **MCP: Rise of the Invaders** - a framework that generates diverse, sophisticated adversarial prompts (MCPs = Model Controlling Prompts) and systematically tests detectors to find their blind spots. Spoiler: I found a lot of blind spots.
+So I built **System Collapse: Rise of the Invaders** - a framework that generates diverse, sophisticated adversarial prompts and systematically tests detectors to find their blind spots. Spoiler: I found a lot of blind spots.
 
 **TL;DR**: I built an automated red team that throws 200 different attacks at detectors and measures what gets through.
 
@@ -43,7 +43,7 @@ So I built **MCP: Rise of the Invaders** - a framework that generates diverse, s
 
 ## The Results (Spoiler: Detection is Hard)
 
-After stress testing with 200 adversarial MCPs, here's what I found:
+After stress testing with 200 adversarial prompts, here's what I found:
 
 | Detector | Recall | Precision | FPR | Latency | Verdict |
 |----------|--------|-----------|-----|---------|---------|
@@ -113,7 +113,7 @@ PyTorch + Transformers + XGBoost
 ### Problem #3: Expected vs. Real-World Performance Gap
 **What happened**: Detector was trained at 62.79% recall, tested at 27.08% recall.
 
-**Why**: Training data (SEP dataset) has different attack distribution than my MCPs. Real adversaries use techniques not well-represented in training.
+**Why**: Training data (SEP dataset) has different attack distribution than my adversarial test prompts. Real adversaries use techniques not well-represented in training.
 
 **Lesson**: Test on diverse adversarial examples, not just your training distribution.
 
@@ -130,8 +130,8 @@ PyTorch + Transformers + XGBoost
 
 ```bash
 # Clone the repo
-git clone https://github.com/vsheahan/MCP-Rise-Of-The-Invaders
-cd MCP-Rise-Of-The-Invaders
+git clone https://github.com/vsheahan/System-Collapse-Rise-Of-The-Invaders
+cd System-Collapse-Rise-Of-The-Invaders
 
 # Install dependencies
 pip install -r requirements.txt
@@ -186,7 +186,7 @@ Outputs:
 
 ```
 ┌─────────────────────────────────────┐
-│  MCP Generator (mcpgen/)            │
+│  Attack Prompt Generator (mcpgen/)  │
 │  ┌────────────────────────────────┐ │
 │  │ 65 Attack Templates            │ │
 │  │ - Bypass instructions          │ │
@@ -196,13 +196,13 @@ Outputs:
 │  │ - API command stealth         │ │
 │  └────────────────────────────────┘ │
 └──────────────┬──────────────────────┘
-               │ Generates MCPs
+               │ Generates attack prompts
                ▼
 ┌─────────────────────────────────────┐
 │  Test Harness (test_integration.py) │
 │  ┌──────────┐      ┌─────────────┐ │
 │  │LLM (stub)│◄────►│Detector     │ │
-│  │          │ MCP  │(stub/real)  │ │
+│  │          │Attack│(stub/real)  │ │
 │  └──────────┘      └─────────────┘ │
 │         Measures: TP, FP, TN, FN    │
 └──────────────┬──────────────────────┘
@@ -219,7 +219,7 @@ Outputs:
 
 ---
 
-## MCP Template Library
+## Attack Template Library
 
 ### 5 Attack Goals × 3 Stealth Levels = 15 Template Categories
 
@@ -248,7 +248,7 @@ Outputs:
    - Moderate: *Hidden commands in code blocks*
    - Stealthy: *Semantic API calls that look benign*
 
-**Multi-turn Support**: 30% of MCPs use 4-turn conversations to build context before attacking.
+**Multi-turn Support**: 30% of attacks use 4-turn conversations to build context before attacking.
 
 ---
 
@@ -277,11 +277,11 @@ Outputs:
 ### Finding #3: Adversarial Distribution Matters
 
 **Training recall**: 62.79% (SEP dataset)
-**Real-world recall**: 27.08% (MCP stress test)
+**Real-world recall**: 27.08% (adversarial stress test)
 
 **Difference**: -35.71 percentage points
 
-**Why**: MCPs include novel attack types (chain-of-thought hijack, format skewing) not well-represented in training data. Real adversaries are creative.
+**Why**: Test prompts include novel attack types (chain-of-thought hijack, format skewing) not well-represented in training data. Real adversaries are creative.
 
 **Takeaway**: Test on diverse adversarial examples beyond your training distribution.
 
@@ -343,16 +343,16 @@ See [DECOUPLING_ANALYSIS.md](DECOUPLING_ANALYSIS.md) for full analysis.
 ## Project Structure
 
 ```
-mcp-rise-of-the-invaders/
+system-collapse-rise-of-the-invaders/
 ├── README.md                          # This file
 ├── requirements.txt                   # Python dependencies
 ├── test_integration.py                # Main test harness
 ├── analyze_results.py                 # Results analysis tool
 │
-├── mcpgen/                           # MCP Generator
+├── mcpgen/                           # Attack prompt generator
 │   ├── templates/                    # 65 attack templates
-│   ├── generator.py                  # Template-based MCP generation
-│   └── models.py                     # Data models (MCP, AttackGoal, etc.)
+│   ├── generator.py                  # Template-based prompt generation
+│   └── models.py                     # Data models (AttackGoal, etc.)
 │
 ├── integrations/                     # Real model integrations
 │   ├── tinyllama_integration.py      # TinyLlama wrapper
@@ -391,8 +391,8 @@ python3 test_integration.py [OPTIONS]
 - `--detector-stub`: Use stub detector (fast, keyword-based)
 - `--ensemble-dir PATH`: Path to Ensemble Space Invaders repo
 - `--model-subdir NAME`: Model subdirectory (models_sep, models_jailbreak)
-- `--num-mcps INT`: Number of MCPs to generate (default: 20)
-- `--num-eval INT`: Number of MCPs to evaluate (default: 10)
+- `--num-mcps INT`: Number of attack prompts to generate (default: 20)
+- `--num-eval INT`: Number of attack prompts to evaluate (default: 10)
 - `--threshold FLOAT`: Detection threshold (default: 0.5)
 - `--output PATH`: Output JSON file
 - `--seed INT`: Random seed for reproducibility
@@ -457,7 +457,7 @@ return full_detector_score  # 10% of prompts
 
 ### Detector Enhancements
 - [ ] Add specific data exfiltration patterns
-- [ ] Train on MCP-style attacks
+- [ ] Train on adversarial test corpus attacks
 - [ ] Threshold tuning for better recall/FPR balance
 - [ ] Multi-turn context awareness
 
@@ -546,11 +546,11 @@ This provides a foundation for iterative improvement. Test on diverse attacks, f
 If you use this framework in your research:
 
 ```bibtex
-@software{mcp_rise_of_invaders_2025,
-  title = {MCP: Rise of the Invaders - Stress Testing Framework for Prompt Injection Detection},
+@software{system_collapse_rise_of_invaders_2025,
+  title = {System Collapse: Rise of the Invaders - Stress Testing Framework for Prompt Injection Detection},
   author = {Sheahan, Vincent},
   year = {2025},
-  url = {https://github.com/vsheahan/MCP-Rise-Of-The-Invaders},
+  url = {https://github.com/vsheahan/System-Collapse-Rise-Of-The-Invaders},
   note = {Adversarial stress testing framework for AI security research}
 }
 ```

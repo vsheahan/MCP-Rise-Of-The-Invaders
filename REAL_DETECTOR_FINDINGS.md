@@ -1,7 +1,7 @@
 # Real Ensemble Detector - Critical Findings
 
 **Date**: 2025-11-01
-**Test Configuration**: 200 MCPs, LLM stub, Real Ensemble SEP detector, Threshold: 0.5
+**Test Configuration**: 200 attack prompts, LLM stub, Real Ensemble SEP detector, Threshold: 0.5
 
 ## 🚨 CRITICAL FINDING: Complete Detection Failure
 
@@ -200,7 +200,7 @@ Zero-padding to match dimensions doesn't preserve semantic meaning. The classifi
 
 ## Conclusion
 
-The MCP: Rise of the Invaders framework successfully **stress-tested the Ensemble Space Invaders detector** and revealed a critical failure mode:
+The System Collapse: Rise of the Invaders framework successfully **stress-tested the Ensemble Space Invaders detector** and revealed a critical failure mode:
 
 **The detector completely fails when feature extraction is incomplete**, achieving 0% recall compared to 62.79% when properly configured.
 
