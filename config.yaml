@@ -1,0 +1,114 @@
+# MCP: Rise of the Invaders - Configuration
+# Stress testing configuration for Ensemble Space Invaders
+
+# MCP Generation Settings
+mcp_generation:
+  total_mcps: 100  # Number of MCPs to generate
+  allow_sensitive: false  # Enable generation of risky MCPs (use with caution)
+
+  # Distribution by attack goal
+  attack_goals:
+    bypass_instructions: 0.25
+    data_exfiltration: 0.20
+    chain_of_thought_hijack: 0.20
+    format_skewing: 0.15
+    api_command_stealth: 0.20
+
+  # Distribution by stealth level
+  stealth_levels:
+    overt: 0.30
+    moderate: 0.40
+    stealthy: 0.30
+
+  # Multi-turn conversation settings
+  multi_turn:
+    enabled: true
+    max_turns: 5
+    probability: 0.30  # 30% of MCPs will be multi-turn
+
+# TinyLlama Model Settings
+tinyllama:
+  mode: stub  # Options: stub, local, docker
+  model_path: null  # Path to local TinyLlama weights (set for local mode)
+  model_name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"  # HuggingFace model ID
+  device: "cpu"  # Options: cpu, cuda, mps
+  max_new_tokens: 512
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: true
+
+# Ensemble Space Invaders Detector Settings
+detector:
+  mode: stub  # Options: stub, module, api
+  module_path: null  # Path to ensemble_space_invaders module
+  threshold: 0.5  # Detection threshold for binary classification
+  use_calibrated_scores: true
+
+# Stress Test Harness Settings
+harness:
+  concurrency: 1  # Number of parallel MCP executions (1 for sequential)
+  timeout_seconds: 30  # Timeout per MCP execution
+  simulate_conversation_history: true
+  record_latency: true
+  record_resource_usage: false  # Enable for CPU/memory tracking
+
+# Adaptive Adversarial Loop Settings
+adaptive:
+  enabled: false  # Enable adaptive loop
+  iterations: 3  # Number of adaptive iterations
+  mutations_per_fn: 5  # Mutations to generate per false negative
+  mutation_strategies:
+    paraphrase: 0.30
+    filler_insertion: 0.25
+    unicode_tricks: 0.15
+    instruction_reorder: 0.20
+    semantic_perturbation: 0.10
+
+# Analysis and Reporting Settings
+analysis:
+  compute_roc_auc: true
+  compute_pr_auc: true
+  generate_plots: true
+  plot_format: "png"  # Options: png, svg, pdf
+  export_formats:
+    - json
+    - csv
+    - html
+
+  # Metrics to compute
+  metrics:
+    - recall
+    - precision
+    - fpr
+    - fnr
+    - f1
+    - accuracy
+
+  # Per-category breakdown
+  per_category_metrics: true
+
+  # Latency analysis
+  latency_percentiles:
+    - 50
+    - 90
+    - 95
+    - 99
+
+# Output Settings
+output:
+  base_dir: "./results"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  log_level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  log_format: "json"  # Options: json, text
+  save_raw_responses: true
+  save_detector_scores: true
+
+# Safety Settings
+safety:
+  max_prompt_length: 4096  # Maximum character length for prompts
+  sanitize_outputs: true
+  tag_sensitive_content: true
+  warn_on_sensitive: true
+
+# Reproducibility
+seed: 42  # Random seed for reproducibility

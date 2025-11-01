@@ -1,0 +1,32 @@
+# MCP: Rise of the Invaders - Dependencies
+# Python 3.10+ required
+
+# Core ML and LLM
+transformers>=4.35.0
+torch>=2.0.0
+accelerate>=0.25.0
+sentencepiece>=0.1.99
+
+# Data handling
+pydantic>=2.5.0
+pyyaml>=6.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Visualization and reporting
+matplotlib>=3.7.0
+seaborn>=0.12.0
+jinja2>=3.1.2
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Utilities
+tqdm>=4.66.0
+python-dateutil>=2.8.2
+
+# Optional: Local model serving
+# flask>=3.0.0
+# fastapi>=0.104.0
+# uvicorn>=0.24.0
