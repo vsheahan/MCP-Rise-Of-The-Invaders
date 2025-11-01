@@ -24,7 +24,7 @@
 
 **What I learned:** Stress testing is crucial. My detector looked good on paper (62% recall in training!), but real adversarial attacks revealed it only catches 27%. The gap between "works in my tests" and "works against real adversaries" is... uncomfortable.
 
-**What this is:** An experimental stress testing framework I built to understand how prompt injection detectors perform under adversarial pressure. Part of my learning journey exploring AI security ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production tool - just research, learning, and sharing what (doesn't) work.
+**What this is:** An experimental stress testing framework I built to understand how prompt injection detectors perform under adversarial pressure. Part of my learning journey exploring AI security, including [Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders), [Latent Space Invaders](https://github.com/vsheahan/Latent-Space-Invaders), and [Ensemble Space Invaders](https://github.com/vsheahan/Ensemble-Space-Invaders). Not a production tool - just research, learning, and sharing what (doesn't) work.
 
 ---
 
