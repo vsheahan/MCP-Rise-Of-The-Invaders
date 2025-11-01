@@ -18,12 +18,11 @@
 
 **Did it reveal anything interesting?** Oh boy, yes:
 - My simple keyword detector: catches 19% of attacks, 9% false alarms
-- My fancy ML detector (broken integration): caught 0% of attacks (whoops)
-- My fancy ML detector (fixed integration): catches 27% of attacks, but 32% false alarms
+- My fancy ML detector: catches 27% of attacks, but 32% false alarms
 
 **The surprising finding:** The sophisticated ML system only caught 41% more attacks than simple keyword matching, while being 500x slower and requiring 6GB of dependencies. Sometimes complexity isn't worth it.
 
-**What I learned:** Stress testing is crucial. My detector looked good on paper (62% recall in training), but real adversarial attacks revealed it only catches 27%. Also, I learned that integration bugs can make a system completely useless (0% recall), and you won't know unless you test properly.
+**What I learned:** Stress testing is crucial. My detector looked good on paper (62% recall in training), but real adversarial attacks revealed it only catches 27%.
 
 **What this is:** An experimental stress testing framework I built to understand how prompt injection detectors perform under adversarial pressure. Part of my learning journey exploring AI security ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production tool - just research, learning, and sharing what (doesn't) work.
 
@@ -48,16 +47,14 @@ After stress testing with 200 adversarial prompts, here's what I found:
 | Detector | Recall | Precision | FPR | Latency | Verdict |
 |----------|--------|-----------|-----|---------|---------|
 | **Stub (Keywords)** | 19.15% | 64.29% | 9.43% | < 1ms | Simple but misses most attacks |
-| **Ensemble (Broken)** | 0.00% ❌ | N/A | 0.00% | N/A | Feature mismatch = total failure |
-| **Ensemble (Fixed)** | 27.08% | 44.07% | 31.73% | ~500ms | Better recall, but high FPR |
+| **Ensemble** | 27.08% | 44.07% | 31.73% | ~500ms | Better recall, but high FPR |
 
 **Key Findings:**
 
 1. **Simple heuristics aren't that bad**: 19% recall, < 1ms latency, minimal dependencies
-2. **ML detectors are brittle**: Wrong features → 0% recall. Integration matters!
-3. **Sophisticated ≠ Better**: ML only 41% better than keywords (27% vs 19%), but 500x slower
-4. **False positives are a trade-off**: Better recall often means more false alarms
-5. **Blind spots are real**: Both detectors caught 0% of data exfiltration attacks
+2. **Sophisticated ≠ Better**: ML only 41% better than keywords (27% vs 19%), but 500x slower
+3. **False positives are a trade-off**: Better recall often means more false alarms
+4. **Blind spots are real**: Both detectors caught 0% of data exfiltration attacks
 
 ---
 
@@ -87,30 +84,7 @@ After stress testing with 200 adversarial prompts, here's what I found:
 
 ## The Journey: From 0% to 27% Recall
 
-### Problem #1: Integration Failures Are Silent
-**What happened**: Loaded the Ensemble detector, ran 200 tests, got 0% recall.
-
-**Why**: I was calling `encode()` but the actual method name was `extract_latent_features()`. The code failed silently, used zero-padding for features, and the classifier saw everything as out-of-distribution → predicted "safe" for all inputs.
-
-**Lesson**: ML models fail silently when given wrong inputs. Always validate feature distributions.
-
-### Problem #2: Dependency Hell
-**What happened**: Tried to use detector standalone, couldn't load VAE.
-
-**Why**: Detector requires complete dependency chain:
-```
-Ensemble Space Invaders
-  ↓
-Latent Space Invaders (VAE)
-  ↓
-TinyLlama (1.1B parameters, ~4GB)
-  ↓
-PyTorch + Transformers + XGBoost
-```
-
-**Lesson**: "Decoupling" doesn't mean "no dependencies." Full stack or nothing.
-
-### Problem #3: Expected vs. Real-World Performance Gap
+### Problem: Expected vs. Real-World Performance Gap
 **What happened**: Detector was trained at 62.79% recall, tested at 27.08% recall.
 
 **Why**: Training data (SEP dataset) has different attack distribution than my adversarial test prompts. Real adversaries use techniques not well-represented in training.
@@ -265,16 +239,7 @@ Outputs:
 
 **Takeaway**: ML is only 41% better at catching attacks, but 3.4x worse at false positives. Trade-offs matter.
 
-### Finding #2: Integration is Everything
-
-**Broken integration**: 0% recall (total failure)
-**Fixed integration**: 27% recall (functional)
-
-**Problem**: Wrong API method names, feature mismatch, silent failures.
-
-**Takeaway**: Even the best detector is useless if integration is wrong. Test the whole pipeline.
-
-### Finding #3: Adversarial Distribution Matters
+### Finding #2: Adversarial Distribution Matters
 
 **Training recall**: 62.79% (SEP dataset)
 **Real-world recall**: 27.08% (adversarial stress test)
@@ -285,7 +250,7 @@ Outputs:
 
 **Takeaway**: Test on diverse adversarial examples beyond your training distribution.
 
-### Finding #4: Stealth Works
+### Finding #3: Stealth Works
 
 - **Overt attacks**: 36.21% detection rate
 - **Stealthy attacks**: 5.56% detection rate
@@ -293,7 +258,7 @@ Outputs:
 
 **Takeaway**: Sophisticated attackers who avoid keywords and use subtle techniques have a massive advantage.
 
-### Finding #5: Multi-turn Attacks Are Dangerous
+### Finding #4: Multi-turn Attacks Are Dangerous
 
 - **1-turn attacks**: 46.6% success rate, 30.4% detection
 - **4-turn attacks**: 77.8% success rate, 11.1% detection
@@ -307,36 +272,16 @@ Outputs:
 ✅ **Template library**: 65 templates covering diverse attack types (comprehensive* - *see limitations below)
 ✅ **Flexible test harness**: Supports stubs, real models, multiple detector types
 ✅ **Systematic evaluation**: Proper metrics, per-attack-goal analysis
-✅ **Failure detection**: Framework successfully revealed integration bugs
 ✅ **Reproducible**: Deterministic seeding, JSON output, analysis tools
 
 ---
 
 ## What Didn't Work
 
-❌ **Simplified integration attempt**: Zero-padding ≠ semantic features (0% recall)
 ❌ **Expected training performance**: Real-world 27% vs training 63% (gap too large)
 ❌ **Detector blind spots**: 0% recall on data exfiltration, API stealth
 ❌ **FPR trade-off**: Better recall → higher false positives (32% FPR)
 ❌ **High complexity**: Full detector needs 6GB, TinyLlama, complex setup
-
----
-
-## Can The Detector Be Decoupled?
-
-**Short Answer**: Yes, for inference. No, not without dependencies.
-
-**Details**: You can load trained models separately from training code, but you need:
-- ✅ XGBoost classifier (4MB)
-- ✅ VAE encoder (TinyLlama-based)
-- ✅ Auxiliary feature extractor
-- ❌ TinyLlama (1.1B params, ~4GB)
-- ❌ Latent Space Invaders (VAE code)
-- ❌ ~500ms inference latency
-
-See [DECOUPLING_ANALYSIS.md](DECOUPLING_ANALYSIS.md) for full analysis.
-
-**Recommended**: Hybrid approach - fast keywords for 90% of prompts, full detector for high-risk cases.
 
 ---
 
@@ -496,7 +441,7 @@ But going from 2% to 63% recall? That's real progress. It won't stop every attac
 Even sophisticated ML detectors struggle with adversarial attacks. 27% recall means 73% of attacks get through. Detection is hard. Attackers have the advantage. Perfect defense is impossible.
 
 **For The Framework**:
-Stress testing revealed critical gaps that wouldn't have been found with standard test datasets. The framework successfully identified integration bugs, distribution mismatch, and blind spots. It's not comprehensive (can't be), but it's useful.
+Stress testing revealed critical gaps that wouldn't have been found with standard test datasets. The framework successfully identified distribution mismatch and detector blind spots. It's not comprehensive (can't be), but it's useful.
 
 **For Future Work**:
 This provides a foundation for iterative improvement. Test on diverse attacks, fix blind spots, re-test, repeat. Red team / blue team forever. The game never ends, but you can get better at playing it.
@@ -535,7 +480,7 @@ MIT License - Free to use, modify, and extend for research and education!
 ---
 
 **Framework Version**: v0.4.0
-**Status**: Full integration working, comprehensive testing complete
+**Status**: Comprehensive testing complete
 **Note**: This is experimental research for understanding AI security, not a production security tool.
 
 Built with curiosity, tested with skepticism, documented with honesty. 👾

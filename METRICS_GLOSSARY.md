@@ -810,24 +810,6 @@ These metrics are specific to the stress testing findings from System Collapse: 
 
 ---
 
-### Integration Failure Mode
-**What it is**: When correct ML models fail due to incorrect feature extraction, API mismatches, or deployment issues.
-
-**In System Collapse**:
-- **Simplified integration** (wrong API): 0% recall (complete failure)
-- **Full integration** (correct API): 27.08% recall (functional)
-
-**Examples of failure**:
-- Wrong method names (`encode()` vs `extract_latent_features()`)
-- Feature dimension mismatch (zero-padding doesn't preserve semantics)
-- Silent failures (model predicts "safe" for everything)
-
-**Why it matters**: Even the best-trained detector is useless with wrong integration. ML models fail silently when given out-of-distribution inputs.
-
-**Lesson**: Test the whole pipeline, not just the model. Integration bugs can kill detection completely.
-
----
-
 ### Complexity-to-Performance Ratio
 **What it measures**: How much improvement you get for added system complexity.
 
